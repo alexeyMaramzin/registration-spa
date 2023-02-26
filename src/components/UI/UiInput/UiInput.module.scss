@@ -1,0 +1,25 @@
+.input{
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: white;
+  width: 325px;
+  border: 1px solid rgba(149, 170, 175, 0.4);
+  &__wrapper{
+    display: flex;
+    gap: 5px;
+  }
+  &__field{
+    outline: none;
+    border: none;
+    color: #61777c;
+    width: 270px;
+    &::placeholder{
+      color: #95AAAF;
+    }
+  }
+  &__icon{
+    padding-top: 3px;
+  }
+}

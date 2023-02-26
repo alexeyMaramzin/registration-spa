@@ -1,0 +1,14 @@
+.loginButton{
+  border-radius: 30px;
+  border: none;
+  background-color: #FFCA42;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1F5460;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &__icon{
+    margin-right: 6px;
+  }
+}

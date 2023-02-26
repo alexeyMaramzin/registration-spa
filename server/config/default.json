@@ -1,0 +1,5 @@
+{
+  "serverPort": 5000,
+  "dbUrl": "mongodb+srv://alexis:alexis123@registration.eypwdnl.mongodb.net/?retryWrites=true&w=majority",
+  "secretKey": "oblepiha"
+}
