@@ -10,7 +10,6 @@ const router = new Router();
 router.post('/registration',
     [
         check('email', 'Incorrect email').isEmail(),
-        // check('login', 'Incorrect login').isLength({min: 0, max: 20}),
         check('password', 'Password must be longer than 5 and shorter than 20').isLength({min: 5, max:20})
     ],
     async (req, res)=>{
@@ -22,7 +21,9 @@ router.post('/registration',
         }
         const {email, login, password} = req.body;
         const candidate = await User.findOne({email});
+        const username = await User.findOne({login});
         if(candidate) return res.status(400).json({message: `User with Email ${email} already exist`})
+        if(username) return res.status(400).json({message: `Login ${login} reserved`})
         const hashPassword = await bcrypt.hash(password, 6);
         const user = new User({
             email,

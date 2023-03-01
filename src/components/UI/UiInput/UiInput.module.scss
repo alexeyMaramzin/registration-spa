@@ -22,4 +22,12 @@
   &__icon{
     padding-top: 3px;
   }
+  &__incorrect{
+    position: absolute;
+    top: -7px;
+    color: rgba(255, 55, 0, 0.73);
+    font-size: 11px;
+    padding: 0 4px;
+    background-color: inherit;
+  }
 }

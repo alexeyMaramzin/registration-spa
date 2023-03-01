@@ -5,7 +5,15 @@ import {UiButton} from "..";
 import IPhone from "../../images/IPhone.png";
 import Logo from "../../images/Logo.jpg";
 import {NavLink} from 'react-router-dom';
-export const StartForm = () => {
+import {GoogleLogin} from "@react-oauth/google";
+import {ReactComponent as GoogleIcon} from "../../images/icons/google.svg";
+import clientId
+    from "../../client_secret_152442300175-sq3vjlp8smqsqibm415d0i044k5gci1c.apps.googleusercontent.com.json";
+import {authorization} from "../../actions/user";
+import {useDispatch} from "react-redux";
+
+export const StartForm = (props) => {
+    const dispatch = useDispatch();
     return (
         <div className={styles.start_form}>
             <div className={styles.start_form__flex}>
@@ -40,7 +48,26 @@ export const StartForm = () => {
                     name='Log in'
                     color='#FFCA42'/>
             </NavLink>
-
+            <div className={styles.start_form__google_button}>
+                <GoogleLogin clientId={clientId.web.client_id}
+                             width='350px'
+                             onSuccess={credentialResponse => {
+                                 console.log(credentialResponse);
+                                 dispatch(authorization('google', 'google', props.setUsername))
+                             }}
+                             onError={() => {
+                                 console.log('Login Failed');
+                             }}
+                             cookiePolicy={'single_host_origin'}
+                />
+            </div>
+            <UiButton
+                className={styles.start_form__google}
+                icon={<GoogleIcon/>}
+                padding='16px 85px'
+                name='Log in using Google'
+                color='#F0F5F2'
+            />
             <NavLink to='/signup'>
                 <UiButton
                     onClick={()=>console.log("sign")}

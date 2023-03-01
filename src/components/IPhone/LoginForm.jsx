@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './IPhone.module.scss';
 import {UiButton, UiIcons, UiInput, UiTime} from "../UI";
 import {NavLink} from "react-router-dom";
@@ -9,10 +9,24 @@ import {ReactComponent as LockIcon} from "../../images/icons/lock.svg";
 import {ReactComponent as GoogleIcon} from "../../images/icons/google.svg";
 import {authorization} from "../../actions/user";
 import {useDispatch} from "react-redux";
+import {GoogleLogin} from "@react-oauth/google";
+import clientId from '../../client_secret_152442300175-sq3vjlp8smqsqibm415d0i044k5gci1c.apps.googleusercontent.com.json';
 export const LoginForm = (props) => {
+    const [inputType, setInputType] = useState('password');
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({})
     const dispatch = useDispatch();
+    useEffect(()=>{
+        if(errors.incorrectLogin)
+            if(login.length>4)
+                errors.incorrectLogin=''
+    }, [login])
+    useEffect(()=>{
+        login.length<3&&login.length>1
+            ?setErrors({...errors, incorrectLogin: 'Login must be longer than 3 '})
+            :setErrors({...errors, incorrectLogin: ''})
+    }, [login])
     return (
         <div className={styles.login_form}>
             <div className={styles.login_form__flex}>
@@ -34,6 +48,12 @@ export const LoginForm = (props) => {
             <p className={styles.login_form__bot}>
                 Enter you credential to continue
             </p>
+            {errors&&
+                <div className={styles.login_form__login_failed}>
+                    {errors.incorrectLogin}
+                    {!errors.incorrectLogin&&errors.wrongLogin}
+                </div>
+            }
             <UiInput
                 className={styles.login_form__login}
                 type='text'
@@ -44,7 +64,9 @@ export const LoginForm = (props) => {
             />
             <UiInput
                 className={styles.login_form__password}
-                type='password'
+                type={inputType}
+                setType={setInputType}
+                format='password'
                 placeholder='Password'
                 icon={<LockIcon/>}
                 value={password}
@@ -56,9 +78,23 @@ export const LoginForm = (props) => {
                 name='Log in'
                 color='#FFCA42'
                 onClick={()=> {
-                    dispatch(authorization(login, password, props.setUsername))
+                    if(!errors.incorrectLogin)
+                    dispatch(authorization(login, password, props.setUsername, setErrors, errors))
                 }}
             />
+            <div className={styles.login_form__google_button}>
+                <GoogleLogin clientId={clientId.web.client_id}
+                             width='350px'
+                             onSuccess={credentialResponse => {
+                                 console.log(credentialResponse);
+                                 dispatch(authorization('google', 'google', props.setUsername, setErrors, errors))
+                             }}
+                             onError={() => {
+                                 console.log('Login Failed');
+                             }}
+                             cookiePolicy={'single_host_origin'}
+                />
+            </div>
             <UiButton
                 className={styles.login_form__google}
                 icon={<GoogleIcon/>}
@@ -78,4 +114,8 @@ export const LoginForm = (props) => {
         </div>
     );
 }
+
+
+
+
 

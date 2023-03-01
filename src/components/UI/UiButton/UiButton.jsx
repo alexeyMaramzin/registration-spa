@@ -6,6 +6,7 @@ export const UiButton = (props) => {
             style={{backgroundColor: props.color, padding: props.padding}}
             className={cn(styles.loginButton, props.className)}
             onClick={props.onClick}
+            disabled={props.disable}
         >
             <div className={styles.loginButton__icon}>
                 {props.icon}

@@ -21,6 +21,7 @@ export const UiInput = (props) => {
                     onChange={(e)=>props.setValue(e.target.value)}
                 />
             </div>
+            <div className={styles.input__incorrect}>{props.error}</div>
             {props.format === 'password' && (
                 <button
                     onClick={()=>props.type==='password'? props.setType('text'):props.setType('password')
