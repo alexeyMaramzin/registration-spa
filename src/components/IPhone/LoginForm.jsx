@@ -21,11 +21,13 @@ export const LoginForm = (props) => {
         if(errors.incorrectLogin)
             if(login.length>4)
                 errors.incorrectLogin=''
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [login])
     useEffect(()=>{
         login.length<3&&login.length>1
             ?setErrors({...errors, incorrectLogin: 'Login must be longer than 3 '})
             :setErrors({...errors, incorrectLogin: ''})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [login])
     return (
         <div className={styles.login_form}>

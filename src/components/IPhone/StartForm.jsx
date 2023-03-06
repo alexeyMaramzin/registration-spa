@@ -11,7 +11,6 @@ import clientId
     from "../../client_secret_152442300175-sq3vjlp8smqsqibm415d0i044k5gci1c.apps.googleusercontent.com.json";
 import {authorization} from "../../actions/user";
 import {useDispatch} from "react-redux";
-
 export const StartForm = (props) => {
     const dispatch = useDispatch();
     return (

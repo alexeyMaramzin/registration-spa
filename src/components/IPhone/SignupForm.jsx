@@ -28,24 +28,27 @@ export const SignupForm = (props) => {
             setErrors({...errors, incorrectLogin: 'Incorrect login, do not use special symbols'})
         else
             setErrors({...errors, incorrectLogin: ''})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [login])
-
     //Password validation
     useEffect(()=>{
-        ((password!==confirm)&&(confirm.length>3))?
-            setErrors({...errors, passwordMismatch: 'Passwords mismatch'}):
-            setErrors({...errors, passwordMismatch: ''});
+        ((password!==confirm)&&(confirm.length>3))
+            ?setErrors({...errors, passwordMismatch: 'Passwords mismatch'})
+            :setErrors({...errors, passwordMismatch: ''});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [password, confirm])
     useEffect(()=>{
         login.length<5
             ?setErrors({...errors, incorrectLogin: 'Login must be longer than 4'})
             :setErrors({...errors, incorrectLogin: ''})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [login])
     useEffect(()=>{
         (password.length<5&&password.length>1)?
             setErrors({...errors, incorrectPassword: 'Password must be longer than 5'}):
             (password.length>20)?setErrors({...errors, incorrectPassword: 'Password must be shorter than 20'}):
             setErrors({...errors, incorrectPassword:''});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [password])
     //Email validation
     useEffect(()=>{
@@ -53,8 +56,11 @@ export const SignupForm = (props) => {
             setErrors({...errors, incorrectEmail: 'Email is incorrect'});
         else
             setErrors({...errors, incorrectEmail: ''})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email])
-    useEffect(()=>{if(auth) dispatch(authorization(login, password, props.setUsername))}, [auth])
+    useEffect(()=>{if(auth) dispatch(authorization(login, password, props.setUsername))},
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [auth])
     return (
         <div className={styles.signup_form}>
             <div className={styles.signup_form__flex}>
@@ -127,7 +133,7 @@ export const SignupForm = (props) => {
                 onClick={()=> {
                     if(password===confirm){
                         if(!errors.incorrectLogin)
-                        registration(login, email, password, setAuth, setErrors, errors);
+                        registration(login, email, password, setAuth, setErrors, errors).then();
                     }
                 }}
             />
