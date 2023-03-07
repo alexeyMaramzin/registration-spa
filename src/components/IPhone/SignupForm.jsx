@@ -13,6 +13,7 @@ import {useDispatch} from "react-redux";
 import {GoogleLogin} from "@react-oauth/google";
 import clientId
     from "../../client_secret_152442300175-sq3vjlp8smqsqibm415d0i044k5gci1c.apps.googleusercontent.com.json";
+import {EMAIL_REGEXP, LOGIN_REGEXP} from "../../regexps";
 export const SignupForm = (props) => {
     const dispatch = useDispatch();
     const [errors, setErrors] = useState({})
@@ -22,44 +23,34 @@ export const SignupForm = (props) => {
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
     const [inputType, setInputType] = useState('password');
-    //Login validation
-    useEffect(()=>{
-        if(!/^[0-9A-ZА-ЯЁ,./?'";:<>]+$/i.test(login)&&login.length>3)
-            setErrors({...errors, incorrectLogin: 'Incorrect login, do not use special symbols'})
-        else
-            setErrors({...errors, incorrectLogin: ''})
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [login])
-    //Password validation
+
     useEffect(()=>{
         ((password!==confirm)&&(confirm.length>3))
             ?setErrors({...errors, passwordMismatch: 'Passwords mismatch'})
             :setErrors({...errors, passwordMismatch: ''});
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [password, confirm])
     useEffect(()=>{
-        login.length<5
-            ?setErrors({...errors, incorrectLogin: 'Login must be longer than 4'})
-            :setErrors({...errors, incorrectLogin: ''})
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if(login.length<5)
+            setErrors({...errors, incorrectLogin: 'Login must be longer than 4'})
+            else if(!LOGIN_REGEXP.test(login)&&(login.length>3))
+            setErrors({...errors, incorrectLogin: 'Incorrect login, do not use special symbols'})
+                else setErrors({...errors, incorrectLogin: ''})
     }, [login])
     useEffect(()=>{
-        (password.length<5&&password.length>1)?
-            setErrors({...errors, incorrectPassword: 'Password must be longer than 5'}):
-            (password.length>20)?setErrors({...errors, incorrectPassword: 'Password must be shorter than 20'}):
-            setErrors({...errors, incorrectPassword:''});
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        (password.length<5&&password.length>1)
+            ?setErrors({...errors, incorrectPassword: 'Password must be longer than 5'})
+            :(password.length>20)
+                ?setErrors({...errors, incorrectPassword: 'Password must be shorter than 20'})
+                :setErrors({...errors, incorrectPassword:''});
     }, [password])
     //Email validation
     useEffect(()=>{
-        if((email.length>1)&&(!/\S+@\S+\.\S+/.test(email)))
-            setErrors({...errors, incorrectEmail: 'Email is incorrect'});
-        else
-            setErrors({...errors, incorrectEmail: ''})
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        (email.length>1)&&(!EMAIL_REGEXP.test(email))
+            ?setErrors({...errors, incorrectEmail: 'Email is incorrect'})
+            :setErrors({...errors, incorrectEmail: ''})
     }, [email])
-    useEffect(()=>{if(auth) dispatch(authorization(login, password, props.setUsername))},
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(()=>{
+        if(auth) dispatch(authorization(login, password, props.setUsername))},
         [auth])
     return (
         <div className={styles.signup_form}>

@@ -1,17 +1,17 @@
 import styles from './UiButton.module.scss';
 import cn from 'classnames';
-export const UiButton = (props) => {
+export const UiButton = (children) => {
     return (
         <button
-            style={{backgroundColor: props.color, padding: props.padding}}
-            className={cn(styles.loginButton, props.className)}
-            onClick={props.onClick}
-            disabled={props.disable}
+            style={{backgroundColor: children.color, padding: children.padding}}
+            className={cn(styles.loginButton, children.className)}
+            onClick={children.onClick}
+            disabled={children.disable}
         >
             <div className={styles.loginButton__icon}>
-                {props.icon}
+                {children.icon}
             </div>
-            {props.name}
+            {children.name}
         </button>
     );
 };
